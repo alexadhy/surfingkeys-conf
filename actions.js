@@ -14,7 +14,10 @@ actions.vimEditURL = () =>
     actions.openLink(url)()
   }, "url")
 
-actions.getURLPath = ({ count = 0, domain = false } = {}) => {
+actions.getURLPath = ({
+  count = 0,
+  domain = false,
+} = {}) => {
   let path = util.getCurrentLocation("pathname").slice(1)
   if (count) {
     path = path.split("/").slice(0, count).join("/")
@@ -25,8 +28,14 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
   return path
 }
 
-actions.copyURLPath = ({ count, domain } = {}) => () =>
-  Clipboard.write(actions.getURLPath({ count, domain }))
+actions.copyURLPath = ({
+  count,
+  domain,
+} = {}) => () =>
+  Clipboard.write(actions.getURLPath({
+    count,
+    domain,
+  }))
 
 actions.copyOrgLink = () =>
   Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`)
@@ -41,7 +50,10 @@ actions.copyMarkdownLink = () =>
   )
 
 actions.duplicateTab = () =>
-  actions.openLink(util.getCurrentLocation("href"), { newTab: true, active: false })()
+  actions.openLink(util.getCurrentLocation("href"), {
+    newTab: true,
+    active: false,
+  })()
 
 // Site/Page Information
 // ---------------------
@@ -50,7 +62,10 @@ const ddossierUrl = "http://centralops.net/co/DomainDossier.aspx"
 actions.showWhois = ({ hostname = util.getCurrentLocation("hostname") } = {}) =>
   () => actions.openLink(`${ddossierUrl}?dom_whois=true&addr=${hostname}`, { newTab: true })()
 
-actions.showDns = ({ hostname = util.getCurrentLocation("hostname"), verbose = false } = {}) => () => {
+actions.showDns = ({
+  hostname = util.getCurrentLocation("hostname"),
+  verbose = false,
+} = {}) => () => {
   let u = ""
   if (verbose) {
     u = `${ddossierUrl}?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true&addr=${hostname}`
@@ -119,11 +134,27 @@ actions.createHints = (selector, action) => () => {
   Hints.create(selector, action)
 }
 
-actions.openAnchor = ({ newTab = false, active = true, prop = "href" } = {}) => (a) => actions.openLink(a[prop], { newTab, active })()
+actions.openAnchor = ({
+  newTab = false,
+  active = true,
+  prop = "href",
+} = {}) => (a) => actions.openLink(a[prop], {
+  newTab,
+  active,
+})()
 
-actions.openLink = (url, { newTab = false, active = true } = {}) => () => {
+actions.openLink = (url, {
+  newTab = false,
+  active = true,
+} = {}) => () => {
   if (newTab) {
-    RUNTIME("openLink", { tab: { tabbed: true, active }, url })
+    RUNTIME("openLink", {
+      tab: {
+        tabbed: true,
+        active,
+      },
+      url,
+    })
     return
   }
   window.location.assign(url)
@@ -149,7 +180,10 @@ actions.previewLink = actions.createHints("a[href]", (a) =>
 // FakeSpot
 // --------
 actions.fakeSpot = (url = util.getCurrentLocation("href")) =>
-  actions.openLink(`https://fakespot.com/analyze?ra=true&url=${url}`, { newTab: true, active: false })()
+  actions.openLink(`https://fakespot.com/analyze?ra=true&url=${url}`, {
+    newTab: true,
+    active: false,
+  })()
 
 // Site-specific actions
 // =====================
@@ -188,7 +222,10 @@ actions.az.viewProduct = () => {
 
 // Godoc
 // -----
-actions.viewGodoc = () => actions.openLink(`https://godoc.org/${actions.getURLPath({ count: 2, domain: true })}`, { newTab: true })()
+actions.viewGodoc = () => actions.openLink(`https://pkg.go.dev/${actions.getURLPath({
+  count:  2,
+  domain: true,
+})}`, { newTab: true })()
 
 // Google
 actions.go = {}

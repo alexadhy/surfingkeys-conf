@@ -12,6 +12,7 @@ const unmaps = {
     "zz", "zR", "ab",
     "Q", "q", "ag",
     "af", ";s", "yp",
+    "h", "n", "N", "e", "i",
     "<Ctrl-j>", "<Ctrl-h>",
   ],
   searchAliases: {
@@ -36,20 +37,26 @@ maps.global = [
     callback:    actions.previewLink,
   },
   {
-    alias:       "w",
+    alias:       "e",
     map:         "k",
     category:    categories.scroll,
     description: "Scroll up",
   },
   {
-    alias:       "s",
+    alias:       "n",
     map:         "j",
     category:    categories.scroll,
     description: "Scroll down",
   },
   {
+    alias:       "i",
+    map:         "l",
+    category:    categories.scroll,
+    description: "Scroll right",
+  },
+  {
     alias:       "K",
-    map:         "e",
+    map:         "u",
     category:    categories.scroll,
     description: "Scroll half page up",
   },
@@ -184,6 +191,12 @@ maps.global = [
     map:         "gxt",
     category:    categories.tabs,
     description: "Close tab to left",
+  },
+  {
+    alias:       "N",
+    map:         "R",
+    category:    categories.tabs,
+    description: "Go one tab right",
   },
   {
     alias:       "gxR",

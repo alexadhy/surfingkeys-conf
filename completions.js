@@ -1,5 +1,9 @@
 const { keys } = require("./conf.priv.js")
-const { escape, createSuggestionItem, createURLItem } = require("./util")
+const {
+  escape,
+  createSuggestionItem,
+  createURLItem,
+} = require("./util")
 
 const wpDefaultIcon = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2056%2056%22%20enable-background%3D%22new%200%200%2056%2056%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23eee%22%20d%3D%22M0%200h56v56h-56z%22%2F%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23999%22%20d%3D%22M36.4%2013.5h-18.6v24.9c0%201.4.9%202.3%202.3%202.3h18.7v-25c.1-1.4-1-2.2-2.4-2.2zm-6.2%203.5h5.1v6.4h-5.1v-6.4zm-8.8%200h6v1.8h-6v-1.8zm0%204.6h6v1.8h-6v-1.8zm0%2015.5v-1.8h13.8v1.8h-13.8zm13.8-4.5h-13.8v-1.8h13.8v1.8zm0-4.7h-13.8v-1.8h13.8v1.8z%22%2F%3E%0A%3C%2Fsvg%3E%0A"
 
@@ -274,13 +278,13 @@ completions.do.callback = (response) => Object.entries(JSON.parse(response.text)
     let symbol = "<strong>?</strong> "
     switch (data.summary) {
     case "inactive":
-      color = "#23b000"
+      color = "#A3BE8C"
       symbol = "✔ "
       break
     case "unknown":
       break
     default:
-      color = "#ff4d00"
+      color = "#BF616A"
       symbol = "✘ "
     }
     return createSuggestionItem(
@@ -313,46 +317,46 @@ completions.az = {
 completions.az.callback = (response) => JSON.parse(response.text)[1]
 
 // Craigslist
-completions.cl = {
-  alias:  "cl",
-  name:   "craigslist",
-  search: "https://www.craigslist.org/search/sss?query=",
-  compl:  "https://www.craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term=",
-}
-
-completions.cl.callback = (response) => JSON.parse(response.text)
+// completions.cl = {
+//   alias:  "cl",
+//   name:   "craigslist",
+//   search: "https://www.craigslist.org/search/sss?query=",
+//   compl:  "https://www.craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term=",
+// }
+//
+// completions.cl.callback = (response) => JSON.parse(response.text)
 
 // EBay
-completions.eb = {
-  alias:  "eb",
-  name:   "ebay",
-  search: "https://www.ebay.com/sch/i.html?_nkw=",
-  compl:  "https://autosug.ebay.com/autosug?callback=0&sId=0&kwd=",
-}
+// completions.eb = {
+//   alias:  "eb",
+//   name:   "ebay",
+//   search: "https://www.ebay.com/sch/i.html?_nkw=",
+//   compl:  "https://autosug.ebay.com/autosug?callback=0&sId=0&kwd=",
+// }
 
-completions.eb.callback = (response) => JSON.parse(response.text).res.sug
+// completions.eb.callback = (response) => JSON.parse(response.text).res.sug
 
 // Yelp
-completions.yp = {
-  alias:  "yp",
-  name:   "yelp",
-  search: "https://www.yelp.com/search?find_desc=",
-  compl:  "https://www.yelp.com/search_suggest/v2/prefetch?prefix=",
-}
-
-completions.yp.callback = (response) => {
-  const res = JSON.parse(response.text).response
-  const words = []
-  res.forEach((r) => {
-    r.suggestions.forEach((s) => {
-      const w = s.query
-      if (words.indexOf(w) === -1) {
-        words.push(w)
-      }
-    })
-  })
-  return words
-}
+// completions.yp = {
+//   alias:  "yp",
+//   name:   "yelp",
+//   search: "https://www.yelp.com/search?find_desc=",
+//   compl:  "https://www.yelp.com/search_suggest/v2/prefetch?prefix=",
+// }
+//
+// completions.yp.callback = (response) => {
+//   const res = JSON.parse(response.text).response
+//   const words = []
+//   res.forEach((r) => {
+//     r.suggestions.forEach((s) => {
+//       const w = s.query
+//       if (words.indexOf(w) === -1) {
+//         words.push(w)
+//       }
+//     })
+//   })
+//   return words
+// }
 
 // ****** General References, Calculators & Utilities ****** //
 
@@ -469,77 +473,77 @@ completions.wt = {
 completions.wt.callback = (response) => Object.values(JSON.parse(response.text).query.pages)
   .map((p) => p.title)
 
-// WolframAlpha
-completions.wa = {
-  alias:  "wa",
-  name:   "wolframalpha",
-  search: "http://www.wolframalpha.com/input/?i=",
-  compl:  `http://api.wolframalpha.com/v2/query?appid=${keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`,
-}
-
-completions.wa.callback = (response) => {
-  const res = JSON.parse(response.text).queryresult
-
-  if (res.error) {
-    return [createSuggestionItem(`
-      <div>
-        <div class="title"><strong>Error</strong> (Code ${escape(res.error.code)})</div>
-        <div class="title">${escape(res.error.msg)}</div>
-      </div>`, { url: "https://www.wolframalpha.com/" })]
-  }
-
-  if (!res.success) {
-    if (res.tips) {
-      return [createSuggestionItem(`
-        <div>
-          <div class="title"><strong>No Results</strong></div>
-          <div class="title">${escape(res.tips.text)}</div>
-        </div>`, { url: "https://www.wolframalpha.com/" })]
-    }
-    if (res.didyoumeans) {
-      return res.didyoumeans.map((s) => createSuggestionItem(`
-        <div>
-            <div class="title"><strong>Did you mean...?</strong></div>
-            <div class="title">${escape(s.val)}</div>
-        </div>`, { url: "https://www.wolframalpha.com/" }))
-    }
-    return [createSuggestionItem(`
-      <div>
-        <div class="title"><strong>Error</strong></div>
-        <div class="title">An unknown error occurred.</div>
-      </div>`, { url: "https://www.wolframalpha.com/" })]
-  }
-
-  const results = []
-  res.pods.forEach((p) => {
-    const result = {
-      title:  escape(p.title),
-      values: [],
-      url:    "http://www.wolframalpha.com/input/?i=",
-    }
-    if (p.numsubpods > 0) {
-      result.url += encodeURIComponent(p.subpods[0].plaintext)
-      p.subpods.forEach((sp) => {
-        if (!sp.plaintext) return
-        let v = ""
-        if (sp.title) {
-          v += `<strong>${escape(sp.title)}</strong>: `
-        }
-        v += escape(sp.plaintext)
-        result.values.push(`<div class="title">${v}</div>`)
-      })
-    }
-    if (result.values.length > 0) {
-      results.push(result)
-    }
-  })
-
-  return results.map((r) => createSuggestionItem(`
-    <div>
-      <div class="title"><strong>${r.title}</strong></div>
-      ${r.values.join("\n")}
-    </div>`, { url: r.url }))
-}
+// // WolframAlpha
+// completions.wa = {
+//   alias:  "wa",
+//   name:   "wolframalpha",
+//   search: "http://www.wolframalpha.com/input/?i=",
+//   compl:  `http://api.wolframalpha.com/v2/query?appid=${keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`,
+// }
+//
+// completions.wa.callback = (response) => {
+//   const res = JSON.parse(response.text).queryresult
+//
+//   if (res.error) {
+//     return [createSuggestionItem(`
+//       <div>
+//         <div class="title"><strong>Error</strong> (Code ${escape(res.error.code)})</div>
+//         <div class="title">${escape(res.error.msg)}</div>
+//       </div>`, { url: "https://www.wolframalpha.com/" })]
+//   }
+//
+//   if (!res.success) {
+//     if (res.tips) {
+//       return [createSuggestionItem(`
+//         <div>
+//           <div class="title"><strong>No Results</strong></div>
+//           <div class="title">${escape(res.tips.text)}</div>
+//         </div>`, { url: "https://www.wolframalpha.com/" })]
+//     }
+//     if (res.didyoumeans) {
+//       return res.didyoumeans.map((s) => createSuggestionItem(`
+//         <div>
+//             <div class="title"><strong>Did you mean...?</strong></div>
+//             <div class="title">${escape(s.val)}</div>
+//         </div>`, { url: "https://www.wolframalpha.com/" }))
+//     }
+//     return [createSuggestionItem(`
+//       <div>
+//         <div class="title"><strong>Error</strong></div>
+//         <div class="title">An unknown error occurred.</div>
+//       </div>`, { url: "https://www.wolframalpha.com/" })]
+//   }
+//
+//   const results = []
+//   res.pods.forEach((p) => {
+//     const result = {
+//       title:  escape(p.title),
+//       values: [],
+//       url:    "http://www.wolframalpha.com/input/?i=",
+//     }
+//     if (p.numsubpods > 0) {
+//       result.url += encodeURIComponent(p.subpods[0].plaintext)
+//       p.subpods.forEach((sp) => {
+//         if (!sp.plaintext) return
+//         let v = ""
+//         if (sp.title) {
+//           v += `<strong>${escape(sp.title)}</strong>: `
+//         }
+//         v += escape(sp.plaintext)
+//         result.values.push(`<div class="title">${v}</div>`)
+//       })
+//     }
+//     if (result.values.length > 0) {
+//       results.push(result)
+//     }
+//   })
+//
+//   return results.map((r) => createSuggestionItem(`
+//     <div>
+//       <div class="title"><strong>${r.title}</strong></div>
+//       ${r.values.join("\n")}
+//     </div>`, { url: r.url }))
+// }
 
 // ****** Business Utilities & References ****** //
 
@@ -888,8 +892,8 @@ completions.gg = {
 // Godoc
 completions.gd = {
   alias:  "gd",
-  name:   "godoc",
-  search: "https://godoc.org/?q=",
+  name:   "godev",
+  search: "https://pkg.go.dev/?q=",
   compl:  "https://api.godoc.org/search?q=",
 }
 
@@ -901,7 +905,7 @@ completions.gd.callback = (response) => JSON.parse(response.text).results.map((s
   if (s.stars) {
     prefix += `[★${s.stars}] `
   }
-  return createURLItem(prefix + s.path, `https://godoc.org/${s.path}`)
+  return createURLItem(prefix + s.path, `https://pkg.go.dev/${s.path}`)
 })
 
 // Gowalker
@@ -1133,5 +1137,35 @@ completions.yt.callback = (response) => JSON.parse(response.text).items
       return null
     }
   }).filter((s) => s !== null)
+
+// Crates
+completions.rc = {
+  alias:      "rc",
+  name:       "rust crates",
+  search:     "https://crates.io/search?q=",
+  completion: "https://crates.io/api/v1/crates?q=",
+}
+
+completions.rc.callback = (resp) => JSON.parse(resp.text).crates.map((c) => {
+  let meta = ""
+  let latestVersion = ""
+  if (c.downloads) {
+    meta += `[↓${escape(c.downloads)}] `
+  }
+  if (c.id) {
+    meta += `${escape(c.id)} `
+  }
+  if (c.newest_version) {
+    latestVersion += c.newest_version
+  }
+
+  return createSuggestionItem(`
+      <div>
+        <div class="title"><strong>${escape(c.id)} + " " + ${latestVersion}</strong></div>
+        <div>${meta}</div>
+        <div>${escape(c.description)}</div>
+      </div>
+    `, { url: `https://crates.io/crates/${escape(c.id)}` })
+})
 
 module.exports = completions

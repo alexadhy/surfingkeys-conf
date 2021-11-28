@@ -1,7 +1,14 @@
 const gulp = require("gulp")
 
-const { task, src, dest } = gulp
-const { parallel, series } = gulp
+const {
+  task,
+  src,
+  dest,
+} = gulp
+const {
+  parallel,
+  series,
+} = gulp
 
 const webpack = require("webpack")
 const webpackStream = require("webpack-stream")
@@ -273,7 +280,10 @@ task("docs", parallel(async () => {
     .pipe(dest("."))
 }))
 
-const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
+const getFavicon = async ({
+  domain,
+  favicon,
+}, timeout = 5000) => {
   const url = favicon
   let data
   try {
@@ -374,7 +384,10 @@ task("install", series("build", () => src(path.join(paths.buildDir, paths.script
   .pipe(dest(paths.installDir))))
 
 const watch = (g, t) => () =>
-  gulp.watch(g, { ignoreInitial: false, usePolling: true }, t)
+  gulp.watch(g, {
+    ignoreInitial: false,
+    usePolling:    true,
+  }, t)
 
 task("watch-build", watch(paths.scripts, series("build")))
 

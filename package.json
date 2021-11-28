@@ -20,7 +20,7 @@
   "contributors": [],
   "license": "MIT",
   "dependencies": {
-    "github-reserved-names": "^2.0.4"
+		"github-reserved-names": "^2.0.4"
   },
   "devDependencies": {
     "del": "^6.0.0",
