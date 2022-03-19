@@ -1,4 +1,16 @@
 const { categories } = require("./help")
+/* eslint-disable no-unused-vars, camelcase, no-undef */
+/* eslint-disable global-require, import/no-dynamic-require */
+const {
+  mapkey,
+  map,
+  unmap,
+  addSearchAlias,
+  removeSearchAlias,
+  Clipboard,
+  Front,
+  Hints,
+} = api
 
 const util = {}
 
@@ -95,10 +107,10 @@ util.rmMaps = (a) => {
 }
 
 util.rmSearchAliases = (a) => Object.entries(a).forEach(([leader, items]) => {
-  if (typeof removeSearchAliasX === "undefined") {
+  if (typeof removeSearchAlias === "undefined") {
     return
   }
-  items.forEach((v) => removeSearchAliasX(v, leader))
+  items.forEach((v) => removeSearchAlias(v, leader))
 })
 
 // Process Mappings
@@ -143,10 +155,10 @@ util.processMaps = (maps, aliases, siteleader) => {
 
 // process completions
 util.processCompletions = (completions, searchleader) => Object.values(completions).forEach((s) => {
-  if (typeof Front === "undefined" || typeof addSearchAliasX === "undefined" || typeof mapkey === "undefined") {
+  if (typeof Front === "undefined" || typeof addSearchAlias === "undefined" || typeof mapkey === "undefined") {
     return
   }
-  addSearchAliasX(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
+  addSearchAlias(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
   mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
   mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
     Clipboard.read((c) => { // TODO: use navigator.clipboard

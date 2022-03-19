@@ -1,3 +1,9 @@
+/* eslint-disable no-unused-vars, camelcase, no-undef */
+/* eslint-disable global-require, import/no-dynamic-require */
+const {
+  Hints,
+} = api
+
 const util = require("./util")
 const keys = require("./keys")
 const completions = require("./completions")
@@ -37,9 +43,25 @@ util.addSettings({
       /* --red: #CC6666; */
       /* --yellow: #CBCA77; */
       /* -------------------- */
+      /* --      Tokyonight -- */
+      /* -------------------- */
+      /* -- DELETE LINE TO ENABLE THEME
+      --fg: #c0caf5;
+      --bg: #24283b;
+      --bg-dark: #1f2335;
+      --border: #414868;
+      --main-fg: #7aa2f7;
+      --accent-fg: #a9b1d6;
+      --info-fg: #bb9af7;
+      --select: #292e42;
+      /* Unused Alternate Colors */
+      /* --orange: #D08770; */
+      /* --red: #BF616A; */
+      /* --yellow: #EBCB8B; */
+      /* -------------------- */
       /* --      NORD      -- */
       /* -------------------- */
-      /* -- DELETE LINE TO ENABLE THEME */
+      /* -- DELETE LINE TO ENABLE THEME
       --fg: #E5E9F0;
       --bg: #3B4252;
       --bg-dark: #2E3440;
@@ -54,17 +76,16 @@ util.addSettings({
       /* --red: #BF616A; */
       /* --yellow: #EBCB8B; */
       /* -------------------- */
-      /* --    DOOM ONE    -- */
+      /* --    ONE DARK -- */
       /* -------------------- */
-      /* -- DELETE LINE TO ENABLE THEME
-      --fg: #51AFEF;
-      --bg: #2E3440;
+      --fg: #abb2bf;
+      --bg: #282c34;
       --bg-dark: #21242B;
-      --border: #2257A0;
-      --main-fg: #51AFEF;
-      --accent-fg: #98be65;
+      --border: #3b3f4c;
+      --main-fg: #abb2bf;
+      --accent-fg: #61afef;
       --info-fg: #C678DD;
-      --select: #4C566A;
+      --select: #393f4a;
       -- DELETE LINE TO ENABLE THEME */
       /* Unused Alternate Colors */
       /* --border-alt: #282C34; */
@@ -281,7 +302,7 @@ util.addSettings({
 })
 
 if (typeof Hints !== "undefined") {
-  Hints.characters = "arstdhneio;wf"
+  Hints.setCharacters("arstdmneio;wf")
 }
 
 // Leader for site-specific mappings
@@ -297,4 +318,7 @@ util.rmSearchAliases(keys.unmaps.searchAliases)
 util.processMaps(keys.maps, keys.aliases, siteleader)
 util.processCompletions(completions, searchleader)
 
-module.exports = { siteleader, searchleader }
+module.exports = {
+  siteleader,
+  searchleader,
+}

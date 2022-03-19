@@ -65,6 +65,7 @@ const requireSrcFiles = () => {
   conf = require("./conf")
   keys = require("./keys")
   util = require("./util")
+
   /* eslint-enable global-require, import/no-dynamic-require */
   srcFilesLoaded = true
 }
@@ -236,10 +237,10 @@ task("docs", parallel(async () => {
     const acc1 = await acc1p
     const header = "<tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>"
     const c = keys.maps[domain]
-    const maps = c.reduce((acc2, map) => {
+    const maps = c.reduce((acc2, mmap) => {
       let leader = ""
-      if (typeof map.leader !== "undefined") {
-        leader = map.leader // eslint-disable-line prefer-destructuring
+      if (typeof mmap.leader !== "undefined") {
+        leader = mmap.leader // eslint-disable-line prefer-destructuring
       } else if (domain === "global") {
         leader = ""
       } else {

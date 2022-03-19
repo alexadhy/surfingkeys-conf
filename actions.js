@@ -1,5 +1,14 @@
-const ghReservedNames = require("github-reserved-names")
+/* eslint-disable no-unused-vars, camelcase, no-undef */
+/* eslint-disable global-require, import/no-dynamic-require */
+const {
+  tabOpenLink,
+  readText,
+  Clipboard,
+  Front,
+  Hints,
+} = api
 
+const ghReservedNames = require("github-reserved-names")
 const util = require("./util")
 
 const actions = {}
