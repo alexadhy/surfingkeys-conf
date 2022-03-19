@@ -1146,26 +1146,41 @@ completions.rc = {
   completion: "https://crates.io/api/v1/crates?q=",
 }
 
-completions.rc.callback = (resp) => JSON.parse(resp.text).crates.map((c) => {
-  let meta = ""
-  let latestVersion = ""
-  if (c.downloads) {
-    meta += `[↓${escape(c.downloads)}] `
-  }
-  if (c.id) {
-    meta += `${escape(c.id)} `
-  }
-  if (c.newest_version) {
-    latestVersion += c.newest_version
-  }
+completions.rc.callback = (response) => JSON.parse(response.text).crates
+  .map((c) => createURLItem(
+    `${c.name}: ${c.description}`,
+    `https://crates.io/crates/${escape(c.id)}`,
+  )).filter((c) => c !== null)
 
-  return createSuggestionItem(`
-      <div>
-        <div class="title"><strong>${escape(c.id)} + " " + ${latestVersion}</strong></div>
-        <div>${meta}</div>
-        <div>${escape(c.description)}</div>
-      </div>
-    `, { url: `https://crates.io/crates/${escape(c.id)}` })
-})
+// completions.rc.callback = (resp) => JSON.parse(resp.text).crates.map((c) => {
+//   let meta = ""
+//   let latestVersion = ""
+//   if (c.downloads) {
+//     meta += `[↓${escape(c.downloads)}] `
+//   }
+//   if (c.id) {
+//     meta += `${escape(c.id)} `
+//   }
+//   if (c.newest_version) {
+//     latestVersion += c.newest_version
+//   }
+//
+//   return createSuggestionItem(`
+//       <div>
+//         <div class="title"><strong>${escape(c.name)} + " " + ${latestVersion}</strong></div>
+//         <div>${meta}</div>
+//         <div>${escape(c.description)}</div>
+//       </div>
+//     `, { url: `https://crates.io/crates/${escape(c.id)}` })
+// })
+
+// Rustdoc
+// completions.rd = {
+//   alias: "rd",
+//   name: "rustdocs",
+//   search: "https://docs.rs/releases/search?query=",
+//   completion: "https://docs.rs/releases/search?query=",
+// }
+// completions.rd.callback = (resp) => JSON.
 
 module.exports = completions
