@@ -1110,13 +1110,13 @@ completions.re = {
 }
 
 completions.re.callback = (response) => JSON.parse(response.text).data.children
-  .map((s) => createURLItem(`[${s.data.score}] ${s.data.title}`, `https://reddit.com${s.data.permalink}`))
+  .map((s) => createURLItem(`[${s.data.score}] ${s.data.title}`, `https://old.reddit.com${s.data.permalink}`))
 
 // YouTube
 completions.yt = {
   alias:  "yt",
   name:   "youtube",
-  search: "https://www.youtube.com/search?q=",
+  search: "https://www.invidious.privacy.gd/search?q=",
   compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${keys.google_yt}&safeSearch=none&q=`,
 }
 
@@ -1126,12 +1126,12 @@ completions.yt.callback = (response) => JSON.parse(response.text).items
     case "youtube#channel":
       return createURLItem(
         `${s.snippet.channelTitle}: ${s.snippet.description}`,
-        `https://youtube.com/channel/${s.id.channelId}`,
+        `https://invidious.privacy.gd/channel/${s.id.channelId}`,
       )
     case "youtube#video":
       return createURLItem(
         ` ▶ ${s.snippet.title}`,
-        `https://youtu.be/${s.id.videoId}`,
+        `https://invidious.privacy.gd/${s.id.videoId}`,
       )
     default:
       return null
